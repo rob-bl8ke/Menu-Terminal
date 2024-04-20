@@ -1,14 +1,18 @@
 param (
     [System.Collections.ArrayList]$Options
 )
-    
+
 $UP_ARROW = 38
 $DOWN_ARROW = 40
 $ESCAPE = 27
 $ENTER = 13
+
+$highlightWidth = 80
 $selectedOption = 0
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
+.$ScriptPath\menu-ascii-logo.ps1
 .$ScriptPath\prompts.ps1
+.$ScriptPath\constants.ps1
 
 function Show-Menu {
     param (
@@ -16,13 +20,17 @@ function Show-Menu {
     )
     
     Clear-Host
+    $test = Show-Ascii
+    Write-Host $test
     Write-Host "Choose an option:`n"
     
     for ($i = 0; $i -lt $Options.Count; $i++) {
         if ($i -eq $selectedOption) {
-            Write-Host "[$($i + 1)] $($Options[$i].Description)" -ForegroundColor Green
+            Write-Host "$($("▶$(" ")$($Options[$i].Description)").PadRight($highlightWidth - 2))" `
+                -ForegroundColor White `
+                -BackgroundColor DarkCyan
         } else {
-            Write-Host "$($i + 1) $($Options[$i].Description)"
+            Write-Host "$("$("  ")$($Options[$i].Description)")"
         }
     }
 }

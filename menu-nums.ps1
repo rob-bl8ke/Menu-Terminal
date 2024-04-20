@@ -2,9 +2,9 @@ $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 $MenuFunctions = "$ScriptPath\menu-function.ps1"
 
 $OptionChange = [PSCustomObject]@{
-    Description = "Change GCN"
+    Description = "Change num"
     Script = {        
-        Write-Host "Changing GCN..."
+        Write-Host "Changing num..."
         Start-Sleep -Milliseconds 3000
         Write-Host "... done."
         pause
@@ -12,9 +12,9 @@ $OptionChange = [PSCustomObject]@{
 }
 
 $OptionView = [PSCustomObject]@{
-    Description = "Viewing Current GCN"
+    Description = "Viewing Current num"
     Script = {        
-        Write-Host "Viewing current GCN..."
+        Write-Host "Viewing current num..."
         Start-Sleep -Milliseconds 3000
         Write-Host "Seen enough"?
         pause
@@ -22,19 +22,14 @@ $OptionView = [PSCustomObject]@{
 }
 
 $OptionManage = [PSCustomObject]@{
-    Description = "Manage GCNs"
-    Script = {        
-        Write-Host "Managing GCNs"
-        Start-Sleep -Milliseconds 3000
-        Write-Host "Done enough"?
-        pause
-    }
+    Description = "Manage nums"
+    Script =  Join-Path -Path $ScriptPath -ChildPath "menu-nums-manage.ps1"
 }
 
 $OptionHistory = [PSCustomObject]@{
-    Description = "View GCN History"
+    Description = "View num History"
     Script = {        
-        Write-Host "Viewing GCN history..."
+        Write-Host "Viewing num history..."
         Start-Sleep -Milliseconds 3000
         Write-Host "Seen enough"?
         pause

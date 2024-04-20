@@ -33,8 +33,8 @@ $Option3 = [PSCustomObject]@{
 }
 
 $Option4 = [PSCustomObject]@{
-    Description = "Option 4: GCNs"
-    Script =  Join-Path -Path $ScriptPath -ChildPath "menu-gcns.ps1"
+    Description = "Option 4: nums"
+    Script =  Join-Path -Path $ScriptPath -ChildPath "menu-nums.ps1"
 }
 
 $OptionQuit = [PSCustomObject]@{
