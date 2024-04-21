@@ -1,5 +1,5 @@
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-$MenuFunctions = "$ScriptPath\menu-function.ps1"
+$MenuFunctions = "$ScriptPath\common\menu-function.ps1"
 
 $Option1 = [PSCustomObject]@{
     Description = "Option 1: Inline"
@@ -34,7 +34,7 @@ $Option3 = [PSCustomObject]@{
 
 $Option4 = [PSCustomObject]@{
     Description = "Option 4: nums"
-    Script =  Join-Path -Path $ScriptPath -ChildPath "menu-nums.ps1"
+    Script =  Join-Path -Path $ScriptPath -ChildPath "nums\menu-nums.ps1"
 }
 
 $OptionQuit = [PSCustomObject]@{

@@ -1,5 +1,5 @@
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-$MenuFunctions = "$ScriptPath\menu-function.ps1"
+$MenuFunctions = "$ScriptPath\..\common\menu-function.ps1"
 
 $OptionChange = [PSCustomObject]@{
     Description = "Change num"
@@ -23,7 +23,7 @@ $OptionView = [PSCustomObject]@{
 
 $OptionManage = [PSCustomObject]@{
     Description = "Manage nums"
-    Script =  Join-Path -Path $ScriptPath -ChildPath "menu-nums-manage.ps1"
+    Script =  Join-Path -Path $ScriptPath -ChildPath ".\manage\menu-nums-manage.ps1"
 }
 
 $OptionHistory = [PSCustomObject]@{

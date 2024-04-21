@@ -1,5 +1,5 @@
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-$MenuFunctions = "$ScriptPath\menu-function.ps1"
+$MenuFunctions = "$ScriptPath\..\..\common\menu-function.ps1"
 
 $OptionList = [PSCustomObject]@{
     Description = "List all nums"
