@@ -1,3 +1,7 @@
+param (
+    [Object]$Config
+)
+
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 $MenuFunctions = "$ScriptPath\..\common\menu-function.ps1"
 
@@ -23,7 +27,12 @@ $OptionView = [PSCustomObject]@{
 
 $OptionManage = [PSCustomObject]@{
     Description = "Manage nums"
-    Script =  Join-Path -Path $ScriptPath -ChildPath ".\manage\menu-nums-manage.ps1"
+    # Script =  Join-Path -Path $ScriptPath -ChildPath ".\manage\menu-nums-manage.ps1"
+    Script = {
+        # Find the path from "menu-functions.ps1... not the root!
+        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\nums\manage\menu-nums-manage.ps1";
+        & $menu -Config $config
+    }
 }
 
 $OptionHistory = [PSCustomObject]@{
@@ -43,4 +52,4 @@ $OptionQuit = [PSCustomObject]@{
     }
 }
 
-&$MenuFunctions -Options ([System.Collections.ArrayList]@($OptionChange, $OptionView, $OptionManage, $OptionHistory, $OptionQuit))
+&$MenuFunctions -SubTitle "Nums Sub-menu" -Options ([System.Collections.ArrayList]@($OptionChange, $OptionView, $OptionManage, $OptionHistory, $OptionQuit)) -Config $Config

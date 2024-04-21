@@ -1,7 +1,15 @@
 function Show-Ascii {
-    return @"
+  [CmdletBinding()]
+  param (
+      [Parameter(Mandatory)]
+      [string]$Title,
+      [string]$SubTitle
+  )
 
-    Rob's Developer Tools
+  return @"
+
+    $Title
+      ~ $SubTitle ~
     _______________
     ,===:'.,            `-._
          `:.`---.__         `-._

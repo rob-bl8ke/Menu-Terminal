@@ -1,0 +1,31 @@
+{
+    "application": {
+        "title": "Developer Tools 2024"
+    },
+    "projectsLibrary": {
+        "ideList": [
+            { "vs": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Common7\\IDE\\devenv.exe" },
+            { "vscode": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Common7\\IDE\\devenv.exe" }
+        ],
+        "projects": [
+            {
+                "title": "Company Employees",
+                "ide": "vs",
+                "path": "C:\\Users\\user\\source\\repos\\CompanyEmployees\\CompanyEmployees.sln",
+                "runAsAdmin": true
+            },
+            {
+                "title": "Basic Web Application",
+                "ide": "vs",
+                "path": "C:\\Users\\user\\source\\repos\\BasicWebApplication\\BasicWebApplication.sln",
+                "runAsAdmin": true
+            },
+            {
+                "title": "Company Employees",
+                "ide": "vscode",
+                "path": "C:\\Code\\k\\esigning-api\\eSigning.Application\\",
+                "runAsAdmin": true
+            }
+        ]
+    }
+}

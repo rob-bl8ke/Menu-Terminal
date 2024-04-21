@@ -1,3 +1,7 @@
+param (
+    [Object]$Config
+)
+
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 $MenuFunctions = "$ScriptPath\..\..\common\menu-function.ps1"
 
@@ -38,4 +42,4 @@ $OptionQuit = [PSCustomObject]@{
     }
 }
 
-&$MenuFunctions -Options ([System.Collections.ArrayList]@($OptionList, $OptionNew, $OptionDelete, $OptionQuit))
+&$MenuFunctions -SubTitle "Nums Management" -Options ([System.Collections.ArrayList]@($OptionList, $OptionNew, $OptionDelete, $OptionQuit)) -Config $Config

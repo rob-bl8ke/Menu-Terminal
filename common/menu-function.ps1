@@ -1,5 +1,7 @@
 param (
-    [System.Collections.ArrayList]$Options
+    [string]$SubTitle,
+    [System.Collections.ArrayList]$Options,
+    [Object]$Config
 )
 
 $UP_ARROW = 38
@@ -12,15 +14,27 @@ $selectedOption = 0
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 .$ScriptPath\menu-ascii-logo.ps1
 .$ScriptPath\prompts.ps1
-.$ScriptPath\constants.ps1
+
+$menuTitle = "(unnamed) fix config"
+if ([string]::IsNullOrWhiteSpace($Config.application.title) -eq $false) {
+    $menuTitle = $Config.application.title
+}
+
+$menuSubTitle = "(unnamed) pass in '-SubTitle' parameter"
+if ([string]::IsNullOrWhiteSpace($SubTitle) -eq $false) {
+    Write-Host "got here"
+    $menuSubTitle = $SubTitle
+}
 
 function Show-Menu {
     param (
-        [System.Collections.ArrayList]$Options
+        [System.Collections.ArrayList]$Options,
+        [string]$Title,
+        [string]$SubTitle
     )
     
     Clear-Host
-    $test = Show-Ascii
+    $test = Show-Ascii -Title $menuTitle -SubTitle $menuSubTitle
     Write-Host $test
     Write-Host "Choose an option:`n"
     
@@ -35,7 +49,7 @@ function Show-Menu {
     }
 }
 
-Show-Menu $Options
+Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle
 
 while ($true) {
     $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
@@ -45,13 +59,13 @@ while ($true) {
             if ($selectedOption -gt 0) {
                 $selectedOption--
             }
-            Show-Menu $Options
+            Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle
         }
         $DOWN_ARROW {
             if ($selectedOption -lt ($Options.Count - 1)) {
                 $selectedOption++
             }
-            Show-Menu $Options
+            Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle
         }
         $ENTER {
             Clear-Host
@@ -59,10 +73,10 @@ while ($true) {
             
             if ($selectedScript -is [ScriptBlock]) {
                 & $selectedScript
-                Show-Menu $Options
+                Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle
             } elseif ($selectedScript -is [string]) {
                 & $selectedScript
-                Show-Menu $Options
+                Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle
             } else {
                 Write-Host "Unknown script type."
             }
