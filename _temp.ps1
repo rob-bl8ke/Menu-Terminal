@@ -90,36 +90,56 @@ function Show-Operations {
             Show-Records
         }
         3 { # Update
-            do {
-                Clear-Host
-                Write-Host "Enter new details for the record:"
-                Write-Host "---------------------------------"
-                $record.Description = Read-Host "New Description"
-                $record.CanModify = Read-Host "New CanModify (Y/N)"
-                
-                Clear-Host
-                Write-Host "Updated Record:"
-                Write-Host "---------------"
-                Write-Host "No: $($record.No)"
-                Write-Host "AltNo: $($record.AltNo)"
-                Write-Host "Description: $($record.Description)"
-                Write-Host "Created: $($record.Created)"
-                Write-Host "CanModify: $($record.CanModify)"
+            if ($record.CanModify -eq "Y") {
+                do {
+                    Clear-Host
+                    Write-Host "Enter new details for the record:"
+                    Write-Host "---------------------------------"
+                    $record.Description = Read-Host "New Description"
+                    $record.CanModify = Read-Host "New CanModify (Y/N)"
+                    
+                    Clear-Host
+                    Write-Host "Updated Record:"
+                    Write-Host "---------------"
+                    Write-Host "No: $($record.No)"
+                    Write-Host "AltNo: $($record.AltNo)"
+                    Write-Host "Description: $($record.Description)"
+                    Write-Host "Created: $($record.Created)"
+                    Write-Host "CanModify: $($record.CanModify)"
 
-                $confirm = Read-Host "Confirm update of this record? (Y/N)"
-            } while ($confirm -ne "Y")
+                    $confirm = Read-Host "Confirm update of this record? (Y/N)"
+                } while ($confirm -ne "Y")
 
-            # Update the CSV file
-            $records | Export-Csv -Path $CsvFilePath -NoTypeInformation -Force
+                # Update the CSV file
+                $records | Export-Csv -Path $CsvFilePath -NoTypeInformation -Force
 
-            Write-Host "Record updated successfully."
+                Write-Host "Record updated successfully."
+            } else {
+                Write-Host "This record cannot be updated."
+            }
             Read-Host "Press Enter to continue..."
             Show-Records
         }
         4 { # Delete
-            # Your delete script here
-            # Update CSV file
-            # Refresh records
+            if ($record.CanModify -eq "Y") {
+                Clear-Host
+                Write-Host "Are you sure you want to delete this record?"
+                Write-Host "--------------------------------------------"
+                Write-Host "No: $($record.No)"
+                Write-Host "Description: $($record.Description)"
+                $confirm = Read-Host "Confirm deletion of this record? (Y/N)"
+
+                if ($confirm -eq "Y") {
+                    $records = $records | Where-Object { $_.No -ne $record.No }
+                    $records | Export-Csv -Path $CsvFilePath -NoTypeInformation -Force
+                    Write-Host "Record deleted successfully."
+                } else {
+                    Write-Host "Deletion canceled."
+                }
+            } else {
+                Write-Host "This record cannot be deleted."
+            }
+            Read-Host "Press Enter to continue..."
             Show-Records
         }
         default {
