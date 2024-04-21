@@ -1,78 +1,9 @@
+# CsvOperations.ps1
+
 # CSV file path
 $CsvFilePath = ".\files\csv\nums.csv"
 
-# Function to display records
-function Show-Records {
-    $records = Import-Csv $CsvFilePath
-    $index = 0
-
-    while ($true) {
-        Clear-Host
-        Write-Host "Use arrow keys to navigate, press Enter to select an operation."
-        Write-Host "--------------------------------------------"
-        
-        for ($i = 0; $i -lt $records.Count; $i++) {
-            if ($i -eq $index) {
-                Write-Host ("-> {0} - {1}" -f $records[$i].No, $records[$i].Description)
-            } else {
-                Write-Host ("   {0} - {1}" -f $records[$i].No, $records[$i].Description)
-            }
-        }
-
-        $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
-
-        switch ($key) {
-            38 { $index = [Math]::Max(0, $index - 1) } # Up arrow
-            40 { $index = [Math]::Min(4, $index + 1) } # Down arrow
-            13 { Show-Operations $records[$index] } # Enter key
-        }
-    }
-}
-
-# Function to display operations
-function Show-Operations {
-    param (
-        $record
-    )
-
-    $operations = @("Create", "Read", "Update", "Delete")
-    $index = 0
-
-    while ($true) {
-        Clear-Host
-        Write-Host "Use arrow keys to navigate, press Enter to select an operation."
-        Write-Host "--------------------------------------------"
-        
-        for ($i = 0; $i -lt $operations.Count; $i++) {
-            if ($i -eq $index) {
-                Write-Host ("-> {0}" -f $operations[$i])
-            } else {
-                Write-Host ("   {0}" -f $operations[$i])
-            }
-        }
-
-        $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
-
-        switch ($key) {
-            38 { $index = [Math]::Max(0, $index - 1) } # Up arrow
-            40 { $index = [Math]::Min(3, $index + 1) } # Down arrow
-            13 { 
-                if ($operations[$index] -eq "Create") {
-                    Create-Record
-                } elseif ($operations[$index] -eq "Read") {
-                    Read-Records
-                } elseif ($operations[$index] -eq "Update") {
-                    Update-Record $record
-                } elseif ($operations[$index] -eq "Delete") {
-                    Delete-Record $record
-                }
-                return
-            } # Enter key
-        }
-    }
-}
-
-# Function to create a record
+# Function to perform create operation
 function Create-Record {
     $newRecord = New-Object PSObject -Property @{
         No = ""
@@ -108,16 +39,15 @@ function Create-Record {
     $newRecord | Export-Csv -Path $CsvFilePath -Append -NoTypeInformation
 
     Write-Host "Record created successfully."
-    Read-Host "Press Enter to continue..."
 }
 
-# Function to read records
+# Function to perform read operation
 function Read-Records {
     # Read script here
     Read-Host "Press Enter to continue..."
 }
 
-# Function to update a record
+# Function to perform update operation
 function Update-Record {
     param (
         $record
@@ -153,10 +83,9 @@ function Update-Record {
         Write-Host "This record cannot be updated."
     }
     Read-Host "Press Enter to continue..."
-    Show-Records
 }
 
-# Function to delete a record
+# Function to perform delete operation
 function Delete-Record {
     param (
         $record
@@ -183,6 +112,3 @@ function Delete-Record {
     }
     Read-Host "Press Enter to continue..."
 }
-
-# Start the script
-Show-Records
