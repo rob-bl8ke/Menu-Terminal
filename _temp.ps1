@@ -90,9 +90,30 @@ function Show-Operations {
             Show-Records
         }
         3 { # Update
-            # Your update script here
-            # Update CSV file
-            # Refresh records
+            do {
+                Clear-Host
+                Write-Host "Enter new details for the record:"
+                Write-Host "---------------------------------"
+                $record.Description = Read-Host "New Description"
+                $record.CanModify = Read-Host "New CanModify (Y/N)"
+                
+                Clear-Host
+                Write-Host "Updated Record:"
+                Write-Host "---------------"
+                Write-Host "No: $($record.No)"
+                Write-Host "AltNo: $($record.AltNo)"
+                Write-Host "Description: $($record.Description)"
+                Write-Host "Created: $($record.Created)"
+                Write-Host "CanModify: $($record.CanModify)"
+
+                $confirm = Read-Host "Confirm update of this record? (Y/N)"
+            } while ($confirm -ne "Y")
+
+            # Update the CSV file
+            $records | Export-Csv -Path $CsvFilePath -NoTypeInformation -Force
+
+            Write-Host "Record updated successfully."
+            Read-Host "Press Enter to continue..."
             Show-Records
         }
         4 { # Delete
