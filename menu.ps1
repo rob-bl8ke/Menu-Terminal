@@ -28,6 +28,12 @@ $Option2 = [PSCustomObject]@{
     Script =  Join-Path -Path $ScriptPath -ChildPath "template-scripts\run-once-script.ps1"
 }
 
+$OptionSanitize = [PSCustomObject]@{
+    Description = "Sanitize to Git Feature Branch"
+    # A simple script file can be run like this...
+    Script =  Join-Path -Path $ScriptPath -ChildPath "wip\git-branch-sanitize.ps1"
+}
+
 $Option3 = [PSCustomObject]@{
     Description = "Option 3: Inline"
     # More advanced menus can be run like this...
@@ -60,4 +66,4 @@ $OptionQuit = [PSCustomObject]@{
 }
 
 # Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
-&$MenuFunctions -SubTitle "Main Menu" -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) -Config $config
+&$MenuFunctions -SubTitle "Main Menu" -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionSanitize, $OptionQuit)) -Config $config

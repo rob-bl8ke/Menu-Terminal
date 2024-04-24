@@ -14,6 +14,7 @@ function Sanitize-String {
     $sanitizedString = $sanitizedString -replace '-+', '-'
     # Trim leading and trailing dashes
     $sanitizedString = $sanitizedString.Trim('-')
+    $sanitizedString = $sanitizedString.ToLower()
     return $sanitizedString
 }
 
