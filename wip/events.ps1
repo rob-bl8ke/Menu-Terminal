@@ -1,65 +1,83 @@
+# Path to the CSV file
+$csvPath = "events.csv"
+
 # Read the CSV file
-$data = Import-Csv -Path "events.csv"
+$data = Import-Csv -Path $csvPath
 
-# Initialize variables for earliest and furthest dates
+# Check for "Y" in both Primary and Secondary columns for each row
+$conflictingRows = $data | Where-Object { $_.Primary -eq "Y" -and $_.Secondary -eq "Y" }
+
+# If conflicting rows are found, inform the user and output the offending row
+if ($conflictingRows.Count -gt 0) {
+    Write-Host "Conflict: A 'Y' is present in both Primary and Secondary columns for the following row:"
+    $conflictingRows
+    Write-Host "Script cannot proceed. Please fix the CSV file and try again."
+    Exit
+}
+
+# Sort the data by date
+$sortedData = $data | Sort-Object { [datetime]::ParseExact($_.Date, 'yyyy-MM-dd', $null) }
+
+# Retrieve today's date and day of the week
 $today = Get-Date
-$earliestDate = $today
-$furthestDate = $today
+# $todayDayOfWeek = $today.DayOfWeek
 
-# Check for conflicting Primary and Secondary values
-$conflictingEntries = $data | Where-Object { $_.Primary -eq "Y" -and $_.Secondary -eq "Y" }
-if ($conflictingEntries) {
-    Write-Host "Error: Conflicting entries found. A record cannot have 'Y' in both 'Primary' and 'Secondary' columns."
-    exit
-}
+# Initialize an array to store sentences for applicable events within the 14-day window
+$sentences = @()
 
-# Loop through each record
-foreach ($record in $data) {
-    $recordDate = [datetime]::ParseExact($record.Date, "yyyy-MM-dd", $null)
+# Loop through the sorted data to find events within the 14-day window
+foreach ($event in $sortedData) {
+    $eventDate = [datetime]::ParseExact($event.Date, 'yyyy-MM-dd', $null)
+    $daysDifference = ($eventDate - $today).Days
+    if ($daysDifference -ge 0 -and $daysDifference -le 14) {
+        # $eventDays = $daysDifference
+        if ($daysDifference -eq 0) {
+            $eventDaysText = "today"
+        }
+        elseif ($daysDifference -eq 1) {
+            $eventDaysText = "tomorrow"
+        }
+        else {
+            $eventDaysText = "in $daysDifference days time"
+        }
+        $eventDayOfWeek = $eventDate.DayOfWeek
+        $eventDayOfWeekText = $eventDayOfWeek.ToString()
+        
+        # Replace "PS" with "Prod Support Release" and "FT" with "Feature Release"
+        $eventType = switch ($event.Event) {
+            "PS" { "Prod Support Release" }
+            "FT" { "Feature Release" }
+            Default { $event.Event }
+        }
+        
+        # Determine if event is on Primary or Secondary
+        $userRole = switch ($event.Primary, $event.Secondary) {
+            "Y" { "Primary" }
+            Default { "Secondary" }
+        }
 
-    # Transform event types and output field values
-    $eventType = switch ($record.Event) {
-        "PS" { "Prod Support Release" }
-        "FT" { "Feature Release" }
-        Default { $record.Event }
-    }
-
-    $primary = switch ($record.Primary) {
-        "Y" { "Primary" }
-        Default { $record.Primary }
-    }
-
-    $secondary = switch ($record.Secondary) {
-        "Y" { "Secondary" }
-        Default { $record.Secondary }
-    }
-
-    # Check if the record date is within the specified range
-    if ($recordDate -ge $today -and $recordDate -le $furthestDate.AddDays(14)) {
-        # Output the transformed record if it's within the range
-        [PSCustomObject]@{
-            Event = $eventType
-            Primary = $primary
-            Secondary = $secondary
-            Date = $record.Date
-        } | Format-Table -AutoSize
-    }
-
-    # Update earliest and furthest dates if needed
-    if ($recordDate -lt $earliestDate) {
-        $earliestDate = $recordDate
-    }
-    if ($recordDate -gt $furthestDate) {
-        $furthestDate = $recordDate
+        $userRole = ""
+        if ($event.Primary -eq "Y") { $userRole = "Primary" }
+        if ($event.Secondary -eq "Y") { $userRole = "Secondary" }
+        
+        # Construct sentence
+        $sentence = "You have $eventType $eventDayOfWeekText $eventDaysText. You are $userRole."
+        $sentences += $sentence
     }
 }
 
-# Check if there's old data in the file
-if ($earliestDate -lt $today.AddMonths(-2)) {
-    Write-Host "Warning: There is a lot of old data in the file that can be removed."
+# If applicable events within the 14-day window are found, display the sentences
+if ($sentences.Count -gt 0) {
+    Write-Host ""
+    Write-Host ""
+    Write-Host "Applicable events within 14 days of today:"
+    $sentences
+    Write-Host ""
+} else {
+    Write-Host "No applicable events found within 14 days of today."
 }
 
-# Check if the event list requires more future input
-if ($furthestDate -lt $today.AddDays(14)) {
-    Write-Host "Warning: The event list requires more future input."
-}
+# # Display the results
+# Write-Host "Earliest Date: $($sortedData[0].Date)"
+# Write-Host "Latest Date: $($sortedData[-1].Date)"
+# Write-Host "Today's Date: $($today.ToString('yyyy-MM-dd')) ($todayDayOfWeek)"
