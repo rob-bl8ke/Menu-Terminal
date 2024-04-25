@@ -36,6 +36,9 @@ function Show-Menu {
     Clear-Host
     $test = Show-Ascii -Title $menuTitle -SubTitle $menuSubTitle
     Write-Host $test
+
+    & "$ScriptPath\..\wip\events.ps1"
+
     Write-Host "Choose an option:`n"
     
     for ($i = 0; $i -lt $Options.Count; $i++) {

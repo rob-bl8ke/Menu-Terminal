@@ -4,8 +4,10 @@
 "Feature Release","2024-03-16","You are Secondary"
 #>
 
+$ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
+
 # Path to the CSV file
-$csvPath = "events.csv"
+$csvPath = "$ScriptPath\events.csv"
 
 # Read the CSV file
 $data = Import-Csv -Path $csvPath
@@ -53,8 +55,9 @@ foreach ($event in $sortedData) {
 if (-not $sortedData) {
     Write-Host "No applicable events found within 14 days of today."
 }
+Write-Host ""
 
-# Display the results
-Write-Host "Earliest Date: $($filteredData[0].Date)"
-Write-Host "Latest Date: $($filteredData[-1].Date)"
-Write-Host "Today's Date: $($today.ToString('yyyy-MM-dd')) ($todayDayOfWeek)"
+# # Display the results
+# Write-Host "Earliest Date: $($filteredData[0].Date)"
+# Write-Host "Latest Date: $($filteredData[-1].Date)"
+# Write-Host "Today's Date: $($today.ToString('yyyy-MM-dd')) ($todayDayOfWeek)"
