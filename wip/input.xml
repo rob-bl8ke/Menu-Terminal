@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<projects>
+  <globals>
+    <input key="ps" title="Release Date (Product Support)" symbol="PsReleaseDate" value="2023-04-11" />
+    <input key="u1" title="Release Date (UAT 1)" symbol="Uat1ReleaseDate" value="2024-04-28" />
+    <input key="u2" title="Release Date (UAT 2)" symbol="Uat2ReleaseDate" value="2024-05-06" />
+  </globals>
+</projects>

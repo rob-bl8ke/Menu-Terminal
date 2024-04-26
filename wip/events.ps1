@@ -58,6 +58,6 @@ if (-not $sortedData) {
 Write-Host ""
 
 # # Display the results
-# Write-Host "Earliest Date: $($filteredData[0].Date)"
-# Write-Host "Latest Date: $($filteredData[-1].Date)"
+# Write-Host "Earliest Date: $($sortedData[0].Date)"
+# Write-Host "Latest Date: $($sortedData[-1].Date)"
 # Write-Host "Today's Date: $($today.ToString('yyyy-MM-dd')) ($todayDayOfWeek)"
