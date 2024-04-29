@@ -67,5 +67,5 @@ function Get-EventBlurb {
 
 # Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
 &$MenuFunctions -SubTitle "Main Menu" -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) `
--BlurbText (Get-EventBlurb)
+-BlurbText (Get-EventBlurb) `
 -Config $config
