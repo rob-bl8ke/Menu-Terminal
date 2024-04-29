@@ -70,9 +70,22 @@ function Get-EventBlurb {
     return "";
 }
 
+$menuTitle = "(unnamed) fix config"
+if ([string]::IsNullOrWhiteSpace($Config.application.title) -eq $false) {
+    $menuTitle = $Config.application.title
+}
+
+$SubTitle = "Main Menu"
+
+$menuSubTitle = "(unnamed) pass in '-SubTitle' parameter"
+if ([string]::IsNullOrWhiteSpace($SubTitle) -eq $false) {
+    Write-Host "got here"
+    $menuSubTitle = $SubTitle
+}
+
 # Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
-&$MenuFunctions -SubTitle "Main Menu" `
+&$MenuFunctions -SubTitle $menuSubTitle `
     -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) `
-    -AsciiArt (Show-Ascii -Title "Main Menu" -SubTitle "Sub Menu") `
+    -AsciiArt (Show-Ascii -Title $menuTitle -SubTitle $menuSubTitle) `
     -BlurbText (Get-EventBlurb) `
     -Config $config

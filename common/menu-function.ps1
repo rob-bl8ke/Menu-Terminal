@@ -1,4 +1,5 @@
 param (
+    [string]$Title,
     [string]$SubTitle,
     [System.Collections.ArrayList]$Options,
     [string]$AsciiArt,
@@ -17,17 +18,6 @@ $highlightWidth = 80
 $selectedOption = 0
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 .$ScriptPath\prompts.ps1
-
-$menuTitle = "(unnamed) fix config"
-if ([string]::IsNullOrWhiteSpace($Config.application.title) -eq $false) {
-    $menuTitle = $Config.application.title
-}
-
-$menuSubTitle = "(unnamed) pass in '-SubTitle' parameter"
-if ([string]::IsNullOrWhiteSpace($SubTitle) -eq $false) {
-    Write-Host "got here"
-    $menuSubTitle = $SubTitle
-}
 
 function Show-Menu {
     param (
