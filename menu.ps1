@@ -84,7 +84,7 @@ if ([string]::IsNullOrWhiteSpace($SubTitle) -eq $false) {
 }
 
 # Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
-&$MenuFunctions -SubTitle $menuSubTitle `
+&$MenuFunctions `
     -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) `
     -AsciiArt (Show-Ascii -Title $menuTitle -SubTitle $menuSubTitle) `
     -BlurbText (Get-EventBlurb) `
