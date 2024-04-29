@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<projects>
+  <globals>
+    <input key="psp" title="Previous Product Support Release Date" symbol="PrevPsReleaseDate" value="0000-00-00" />
+    <input key="psc" title="Product Support Release Date" symbol="PsReleaseDate" value="0000-00-00" />
+    <input key="uat1" title="Feature Release Date (UAT 1)" symbol="Uat1ReleaseDate" value="0000-00-00" />
+    <input key="uat2" title="Future Feature Release Date (UAT 2)" symbol="Uat2ReleaseDate" value="0000-00-00" />
+  </globals>
+</projects>
