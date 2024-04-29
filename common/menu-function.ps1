@@ -1,9 +1,12 @@
 param (
     [string]$SubTitle,
     [System.Collections.ArrayList]$Options,
+    [string]$AsciiArt,
     [string]$BlurbText,
     [Object]$Config
 )
+
+Write-Host $AsciiArt
 
 $UP_ARROW = 38
 $DOWN_ARROW = 40
@@ -13,7 +16,6 @@ $ENTER = 13
 $highlightWidth = 80
 $selectedOption = 0
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-.$ScriptPath\menu-ascii-logo.ps1
 .$ScriptPath\prompts.ps1
 
 $menuTitle = "(unnamed) fix config"
@@ -31,14 +33,16 @@ function Show-Menu {
     param (
         [System.Collections.ArrayList]$Options,
         [string]$Title,
+        [string]$AsciiArt,
         [string]$BlurbText,
         [string]$SubTitle
     )
     
     Clear-Host
-    $image = Show-Ascii -Title $menuTitle -SubTitle $menuSubTitle
-    Write-Host $image
+    
+    Write-Host $AsciiArt
     Write-Host $BlurbText
+    Write-Host ""
     Write-Host "Choose an option:`n"
     
     for ($i = 0; $i -lt $Options.Count; $i++) {
@@ -51,7 +55,7 @@ function Show-Menu {
     }
 }
 
-Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle -BlurbText $BlurbText
+Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle -AsciiArt $AsciiArt -BlurbText $BlurbText
 
 while ($true) {
     $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
@@ -61,13 +65,13 @@ while ($true) {
             if ($selectedOption -gt 0) {
                 $selectedOption--
             }
-            Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle -BlurbText $BlurbText
+            Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle -AsciiArt $AsciiArt -BlurbText $BlurbText
         }
         $DOWN_ARROW {
             if ($selectedOption -lt ($Options.Count - 1)) {
                 $selectedOption++
             }
-            Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle -BlurbText $BlurbText
+            Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle -AsciiArt $AsciiArt -BlurbText $BlurbText
         }
         $ENTER {
             Clear-Host
@@ -75,10 +79,10 @@ while ($true) {
             
             if ($selectedScript -is [ScriptBlock]) {
                 & $selectedScript
-                Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle -BlurbText $BlurbText
+                Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle -AsciiArt $AsciiArt -BlurbText $BlurbText
             } elseif ($selectedScript -is [string]) {
                 & $selectedScript
-                Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle -BlurbText $BlurbText
+                Show-Menu -Options $Options -Title $menuTitle -SubTitle $menuSubTitle -AsciiArt $AsciiArt -BlurbText $BlurbText
             } else {
                 Write-Host "Unknown script type."
             }

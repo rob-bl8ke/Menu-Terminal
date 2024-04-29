@@ -1,12 +1,15 @@
 # Sub-menus will not include this code to get the config from
 # the JSON configuration file.
+$ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
+
 $jsonContent = Get-Content -Path "config.json" -Raw
 $config = $jsonContent | ConvertFrom-Json
+
+."$ScriptPath\common\menu-ascii-logo.ps1"
 
 # .........
 
 # Sub-menues will start here...
-$ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 $MenuFunctions = "$ScriptPath\common\menu-function.ps1"
 
 $Option1 = [PSCustomObject]@{
@@ -61,11 +64,15 @@ $OptionQuit = [PSCustomObject]@{
 
 $eventBlurbPath = "$ScriptPath\data\events\events-blurb.txt"
 function Get-EventBlurb {
-    $blurb = Get-Content -Path $eventBlurbPath -Raw
-    return $blurb
+    if ((Test-Path -Path $eventBlurbPath) -eq $true) {
+        return (Get-Content -Path $eventBlurbPath -Raw)
+    }
+    return "";
 }
 
 # Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
-&$MenuFunctions -SubTitle "Main Menu" -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) `
--BlurbText (Get-EventBlurb) `
--Config $config
+&$MenuFunctions -SubTitle "Main Menu" `
+    -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) `
+    -AsciiArt (Show-Ascii -Title "Main Menu" -SubTitle "Sub Menu") `
+    -BlurbText (Get-EventBlurb) `
+    -Config $config
