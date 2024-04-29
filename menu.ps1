@@ -5,7 +5,7 @@ $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 $jsonContent = Get-Content -Path "config.json" -Raw
 $config = $jsonContent | ConvertFrom-Json
 
-."$ScriptPath\common\menu-ascii-logo.ps1"
+."$ScriptPath\common\ascii-logo.ps1"
 
 # .........
 
