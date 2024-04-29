@@ -59,5 +59,13 @@ $OptionQuit = [PSCustomObject]@{
     }
 }
 
+$eventBlurbPath = "$ScriptPath\data\events\events-blurb.txt"
+function Get-EventBlurb {
+    $blurb = Get-Content -Path $eventBlurbPath -Raw
+    return $blurb
+}
+
 # Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
-&$MenuFunctions -SubTitle "Main Menu" -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) -Config $config
+&$MenuFunctions -SubTitle "Main Menu" -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) `
+-BlurbText (Get-EventBlurb)
+-Config $config
