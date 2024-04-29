@@ -6,44 +6,16 @@ $jsonContent = Get-Content -Path "config.json" -Raw
 $config = $jsonContent | ConvertFrom-Json
 
 ."$ScriptPath\common\ascii-logo.ps1"
+."$ScriptPath\common\stub-menu-option.ps1"
 
 # .........
 
 # Sub-menues will start here...
 $MenuFunctions = "$ScriptPath\common\menu-function.ps1"
 
-$Option1 = [PSCustomObject]@{
-    Description = "Option 1: Inline"
-    Script = {        
-        Write-Host "Executing Option 1"
-        if ((Get-YesNo "Would you like to wait for 3 seconds?") -eq $true) {
-            Start-Sleep -Milliseconds 3000
-        }
-        
-        Write-Host "... done executing..."
-        pause
-    }
-}
-
-$Option2 = [PSCustomObject]@{
-    Description = "Option 2: A script file"
-    # A simple script file can be run like this...
-    Script =  Join-Path -Path $ScriptPath -ChildPath "template-scripts\run-once-script.ps1"
-}
-
-$Option3 = [PSCustomObject]@{
-    Description = "Option 3: Inline"
-    # More advanced menus can be run like this...
-    Script = {
-        Write-Host "Executing Option 3"
-        if ((Get-YesNo "Would you like to wait for 3 seconds?") -eq $true) {
-            Start-Sleep -Milliseconds 3000
-        }
-        
-        Write-Host "... done executing..."
-        pause
-    }
-}
+$Option1 = New-StubInlineScriptMenuOption "Menu Option 1"
+$Option2 = New-StubInlineScriptMenuOption "Menu Option 2"
+$Option3 = New-StubInlineScriptMenuOption "Menu Option 3"
 
 $Option4 = [PSCustomObject]@{
     Description = "Option 4: nums"
