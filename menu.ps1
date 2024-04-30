@@ -2,9 +2,6 @@
 # the JSON configuration file.
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 
-$jsonContent = Get-Content -Path "config.json" -Raw
-$config = $jsonContent | ConvertFrom-Json
-
 ."$ScriptPath\common\stub-menu-option.ps1"
 
 # .........
@@ -33,20 +30,7 @@ $OptionQuit = [PSCustomObject]@{
     }
 }
 
-$menuTitle = "(unnamed) fix config"
-if ([string]::IsNullOrWhiteSpace($Config.application.title) -eq $false) {
-    $menuTitle = $Config.application.title
-}
-
-$SubTitle = "Main Menu"
-
-$menuSubTitle = "(unnamed) pass in '-SubTitle' parameter"
-if ([string]::IsNullOrWhiteSpace($SubTitle) -eq $false) {
-    Write-Host "got here"
-    $menuSubTitle = $SubTitle
-}
-
 # Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
 &$MenuFunctions `
-    -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) `
-    -Config $config
+    -Title "Main Menu" `
+    -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit))

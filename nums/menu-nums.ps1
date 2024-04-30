@@ -52,4 +52,4 @@ $OptionQuit = [PSCustomObject]@{
     }
 }
 
-&$MenuFunctions -SubTitle "Nums Sub-menu" -Options ([System.Collections.ArrayList]@($OptionChange, $OptionView, $OptionManage, $OptionHistory, $OptionQuit)) -Config $Config
+&$MenuFunctions -Title "Nums Sub-menu" -Options ([System.Collections.ArrayList]@($OptionChange, $OptionView, $OptionManage, $OptionHistory, $OptionQuit)) -Config $Config

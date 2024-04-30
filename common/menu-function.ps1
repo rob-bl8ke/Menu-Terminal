@@ -1,10 +1,7 @@
 param (
-    [System.Collections.ArrayList]$Options,
-    [string]$AsciiArt,
-    [Object]$Config
+    [string]$Title,
+    [System.Collections.ArrayList]$Options
 )
-
-Write-Host $AsciiArt
 
 $UP_ARROW = 38
 $DOWN_ARROW = 40
@@ -47,6 +44,23 @@ function Get-AsciiArt {
 "@
 }
 
+function Get-JsonConfig {
+    $jsonContent = Get-Content -Path "$ScriptPath\..\config.json" -Raw
+    return $jsonContent | ConvertFrom-Json
+}
+
+$config = Get-JsonConfig
+
+$applicationTitle = "(unnamed application)"
+if ([string]::IsNullOrWhiteSpace($config.application.title) -eq $false) {
+    $applicationTitle = $config.application.title
+}
+
+$menuTitle = "(unnamed menu title)"
+if ([string]::IsNullOrWhiteSpace($Title) -eq $false) {
+    $menuTitle = $Title
+}
+
 function Get-EventBlurb {
     $eventBlurbPath = "$ScriptPath\..\data\events\events-blurb.txt"
     if ((Test-Path -Path $eventBlurbPath) -eq $true) {
@@ -79,7 +93,7 @@ function Show-Menu {
     }
 }
 
-$asciiArt = Get-AsciiArt -Title $menuTitle -SubTitle $menuSubTitle
+$asciiArt = Get-AsciiArt -Title $applicationTitle -SubTitle $menuTitle
 $blurbText = Get-EventBlurb
 
 Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
