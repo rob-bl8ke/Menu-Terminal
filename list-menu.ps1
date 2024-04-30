@@ -1,16 +1,18 @@
-
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
+$CsvFilePath = "id-table.csv"
 
 $Menu = "$ScriptPath\common\row-selection-menu.ps1"
 
-$Option1  = [PSCustomObject]@{
-    Id = "1234"
-    Description = "The Option Description"
-}
+$data = Import-Csv $CsvFilePath
 
-$Option2  = [PSCustomObject]@{
-    Id = "2222"
-    Description = "The Option Description"
+$options = @()
+
+$data | ForEach-Object {
+    $option = [PSCustomObject]@{
+        Id = $_.id
+        Description = $_.description
+    }
+    $options = $options + $option
 }
 
 $OptionQuit = [PSCustomObject]@{
@@ -18,14 +20,14 @@ $OptionQuit = [PSCustomObject]@{
     Description = "quit"
 }
 
-# Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
-$selection = &$Menu `
-    -Title "Main Menu" `
-    -Options ([System.Collections.ArrayList]@($Option1, $Option2, $OptionQuit))
+$options = $options + $OptionQuit
 
-    
-    if ($selection -eq "0") {
-        Write-Host "Just quit the application"
-    } else {
-        Write-Host "Received: $selection"
-    }
+$selection = &$Menu `
+    -Title "Option Selection Menu" `
+    -Options $options
+
+if ($selection -eq "0") {
+    Write-Host "Just quit the application"
+} else {
+    Write-Host "Received: $selection"
+}
