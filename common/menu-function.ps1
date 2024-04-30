@@ -16,6 +16,37 @@ $selectedOption = 0
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 .$ScriptPath\prompts.ps1
 
+function Get-AsciiArt {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string]$Title,
+        [string]$SubTitle
+    )
+  
+    return @"
+  
+      $Title
+        ~ $SubTitle ~
+      _______________
+      ,===:'.,            `-._
+           `:.`---.__         `-._
+             `:.     `--.         `.
+               \.        `.         `.
+       (,,(,    \.         `.   ____,-`.,
+    (,'     `/   \.   ,--.___`.'
+  ,  ,'  ,--.  `,   \.;'         `
+  `{D, {    \  :    \;
+   V,,'    /  /    //
+   j;;    /  ,' ,-//.    ,---.      ,
+   \;'   /  ,' /  _  \  /  _  \   ,'/
+         \   `'  / \  `'  / \  `.' /
+          `.___,'   `.__,'   `.__,'  
+  
+  
+"@
+}
+
 function Get-EventBlurb {
     $eventBlurbPath = "$ScriptPath\..\data\events\events-blurb.txt"
     if ((Test-Path -Path $eventBlurbPath) -eq $true) {
@@ -48,7 +79,10 @@ function Show-Menu {
     }
 }
 
-Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText (Get-EventBlurb)
+$asciiArt = Get-AsciiArt -Title $menuTitle -SubTitle $menuSubTitle
+$blurbText = Get-EventBlurb
+
+Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
 
 while ($true) {
     $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
@@ -58,13 +92,13 @@ while ($true) {
             if ($selectedOption -gt 0) {
                 $selectedOption--
             }
-            Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText (Get-EventBlurb)
+            Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
         }
         $DOWN_ARROW {
             if ($selectedOption -lt ($Options.Count - 1)) {
                 $selectedOption++
             }
-            Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText (Get-EventBlurb)
+            Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
         }
         $ENTER {
             Clear-Host
@@ -72,10 +106,10 @@ while ($true) {
             
             if ($selectedScript -is [ScriptBlock]) {
                 & $selectedScript
-                Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText (Get-EventBlurb)
+                Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
             } elseif ($selectedScript -is [string]) {
                 & $selectedScript
-                Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText (Get-EventBlurb)
+                Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
             } else {
                 Write-Host "Unknown script type."
             }

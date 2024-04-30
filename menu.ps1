@@ -5,7 +5,6 @@ $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 $jsonContent = Get-Content -Path "config.json" -Raw
 $config = $jsonContent | ConvertFrom-Json
 
-."$ScriptPath\common\ascii-logo.ps1"
 ."$ScriptPath\common\stub-menu-option.ps1"
 
 # .........
@@ -34,8 +33,6 @@ $OptionQuit = [PSCustomObject]@{
     }
 }
 
-
-
 $menuTitle = "(unnamed) fix config"
 if ([string]::IsNullOrWhiteSpace($Config.application.title) -eq $false) {
     $menuTitle = $Config.application.title
@@ -52,5 +49,4 @@ if ([string]::IsNullOrWhiteSpace($SubTitle) -eq $false) {
 # Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
 &$MenuFunctions `
     -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) `
-    -AsciiArt (Show-Ascii -Title $menuTitle -SubTitle $menuSubTitle) `
     -Config $config
