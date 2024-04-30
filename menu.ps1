@@ -7,7 +7,7 @@ $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 # .........
 
 # Sub-menues will start here...
-$MenuFunctions = "$ScriptPath\common\menu-function.ps1"
+$Menu = "$ScriptPath\common\operations-menu.ps1"
 
 $Option1 = New-StubInlineScriptMenuOption "Menu Option 1"
 $Option2 = New-StubInlineScriptMenuOption "Menu Option 2"
@@ -31,6 +31,6 @@ $OptionQuit = [PSCustomObject]@{
 }
 
 # Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
-&$MenuFunctions `
+&$Menu `
     -Title "Main Menu" `
     -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit))

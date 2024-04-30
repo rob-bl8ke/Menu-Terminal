@@ -3,7 +3,7 @@ param (
 )
 
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-$MenuFunctions = "$ScriptPath\..\common\menu-function.ps1"
+$Menu = "$ScriptPath\..\common\operations-menu.ps1"
 
 $OptionChange = [PSCustomObject]@{
     Description = "Change num"
@@ -52,4 +52,4 @@ $OptionQuit = [PSCustomObject]@{
     }
 }
 
-&$MenuFunctions -Title "Nums Sub-menu" -Options ([System.Collections.ArrayList]@($OptionChange, $OptionView, $OptionManage, $OptionHistory, $OptionQuit)) -Config $Config
+&$Menu -Title "Nums Sub-menu" -Options ([System.Collections.ArrayList]@($OptionChange, $OptionView, $OptionManage, $OptionHistory, $OptionQuit)) -Config $Config
