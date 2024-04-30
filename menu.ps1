@@ -1,16 +1,10 @@
-# Sub-menus will not include this code to get the config from
-# the JSON configuration file.
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-
-$jsonContent = Get-Content -Path "config.json" -Raw
-$config = $jsonContent | ConvertFrom-Json
+$MenuFunctions = "$ScriptPath\common\menu-function.ps1"
 
 ."$ScriptPath\common\ascii-logo.ps1"
 
-# .........
-
-# Sub-menues will start here...
-$MenuFunctions = "$ScriptPath\common\menu-function.ps1"
+$jsonContent = Get-Content -Path "config.json" -Raw
+$config = $jsonContent | ConvertFrom-Json
 
 $Option1 = [PSCustomObject]@{
     Description = "Option 1: Inline"
