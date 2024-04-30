@@ -34,13 +34,7 @@ $OptionQuit = [PSCustomObject]@{
     }
 }
 
-$eventBlurbPath = "$ScriptPath\data\events\events-blurb.txt"
-function Get-EventBlurb {
-    if ((Test-Path -Path $eventBlurbPath) -eq $true) {
-        return (Get-Content -Path $eventBlurbPath -Raw)
-    }
-    return "";
-}
+
 
 $menuTitle = "(unnamed) fix config"
 if ([string]::IsNullOrWhiteSpace($Config.application.title) -eq $false) {
@@ -59,5 +53,4 @@ if ([string]::IsNullOrWhiteSpace($SubTitle) -eq $false) {
 &$MenuFunctions `
     -Options ([System.Collections.ArrayList]@($Option1, $Option2, $Option3, $Option4, $OptionQuit)) `
     -AsciiArt (Show-Ascii -Title $menuTitle -SubTitle $menuSubTitle) `
-    -BlurbText (Get-EventBlurb) `
     -Config $config

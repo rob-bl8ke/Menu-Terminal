@@ -1,7 +1,6 @@
 param (
     [System.Collections.ArrayList]$Options,
     [string]$AsciiArt,
-    [string]$BlurbText,
     [Object]$Config
 )
 
@@ -16,6 +15,14 @@ $highlightWidth = 80
 $selectedOption = 0
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 .$ScriptPath\prompts.ps1
+
+function Get-EventBlurb {
+    $eventBlurbPath = "$ScriptPath\..\data\events\events-blurb.txt"
+    if ((Test-Path -Path $eventBlurbPath) -eq $true) {
+        return (Get-Content -Path $eventBlurbPath -Raw)
+    }
+    return "";
+}
 
 function Show-Menu {
     param (
@@ -41,7 +48,7 @@ function Show-Menu {
     }
 }
 
-Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText $BlurbText
+Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText (Get-EventBlurb)
 
 while ($true) {
     $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
@@ -51,13 +58,13 @@ while ($true) {
             if ($selectedOption -gt 0) {
                 $selectedOption--
             }
-            Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText $BlurbText
+            Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText (Get-EventBlurb)
         }
         $DOWN_ARROW {
             if ($selectedOption -lt ($Options.Count - 1)) {
                 $selectedOption++
             }
-            Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText $BlurbText
+            Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText (Get-EventBlurb)
         }
         $ENTER {
             Clear-Host
@@ -65,10 +72,10 @@ while ($true) {
             
             if ($selectedScript -is [ScriptBlock]) {
                 & $selectedScript
-                Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText $BlurbText
+                Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText (Get-EventBlurb)
             } elseif ($selectedScript -is [string]) {
                 & $selectedScript
-                Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText $BlurbText
+                Show-Menu -Options $Options -AsciiArt $AsciiArt -BlurbText (Get-EventBlurb)
             } else {
                 Write-Host "Unknown script type."
             }
