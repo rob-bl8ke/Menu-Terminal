@@ -5,15 +5,22 @@ Web API Menu
 All operations required by the Web API
 
 ################################################################################################### #>
+
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 
 ."$ScriptPath\..\..\common\stub-menu-option.ps1"
+$Menu = "$ScriptPath\..\..\common\operations-menu.ps1"
 
-$Menu = "$ScriptPath\..\..\\common\operations-menu.ps1"
-
-$OptionRunWebApi = New-StubInlineScriptMenuOption "Run Web Api"
 $OptionClearGcnHistory = New-StubInlineScriptMenuOption "Clear GCN History"
 $OptionViewCurrentGcn = New-StubInlineScriptMenuOption "View Current GCN"
+
+$OptionRunWebApi = [PSCustomObject]@{
+    Description = "Run Web API"
+    Script = {
+        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\web-api\run-web-api.ps1"
+        & $menu
+    }
+}
 
 $OptionQuit = [PSCustomObject]@{
     Description = "Quit"
@@ -26,7 +33,8 @@ $OptionQuit = [PSCustomObject]@{
 &$Menu `
     -Title "Web API" `
     -Options ([System.Collections.ArrayList]@( `
-        $OptionRunWebApi, $OptionClearGcnHistory, `
+        $OptionRunWebApi, `
+        $OptionClearGcnHistory, `
         $OptionViewCurrentGcn, `
         $OptionQuit `
     ))

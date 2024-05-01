@@ -21,7 +21,7 @@ $Option4 = [PSCustomObject]@{
     # Call a sub-menu by running an inline script.
     # Find the path from "menu-functions.ps1... not the root!
     Script = {
-        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\nums\menu-nums.ps1";
+        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\nums\menu-nums.ps1"
         & $menu -Config $config
     }
 }
@@ -29,7 +29,7 @@ $Option4 = [PSCustomObject]@{
 $OptionWebApi = [PSCustomObject]@{
     Description = "Web API"
     Script = {
-        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\web-api\menu.ps1";
+        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\web-api\menu.ps1"
         & $menu
     }
 }
