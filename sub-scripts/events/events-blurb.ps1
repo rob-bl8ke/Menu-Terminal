@@ -8,7 +8,7 @@ $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 
 $dayWindow = 7
 $blurbPath = "$ScriptPath\..\..\data\events\events-blurb.txt"
-$csvPath = "$ScriptPath\..\..\data\events\events.csv"
+$csvPath = "$ScriptPath\events.csv"
 
 # Read the CSV file
 $data = Import-Csv -Path $csvPath
