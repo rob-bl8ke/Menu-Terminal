@@ -1,5 +1,6 @@
 param (
     [string]$Title,
+    [string]$Question,
     [System.Collections.ArrayList]$Options
 )
 
@@ -58,6 +59,7 @@ function Get-EventBlurb {
 function Show-Menu {
     param (
         [System.Collections.ArrayList]$Options,
+        [string]$Question,
         [string]$AsciiArt,
         [string]$BlurbText
     )
@@ -67,7 +69,7 @@ function Show-Menu {
     Write-Host $AsciiArt
     Write-Host $BlurbText
     Write-Host ""
-    Write-Host "Choose an option:`n"
+    Write-Host "$Question`n"
     
     for ($i = 0; $i -lt $Options.Count; $i++) {
         if ($i -eq $selectedOption) {
@@ -82,7 +84,7 @@ function Show-Menu {
 $asciiArt = Get-AsciiArt -Title $applicationTitle -SubTitle $menuTitle
 $blurbText = Get-EventBlurb
 
-Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
+Show-Menu -Options $Options -Question $Question -AsciiArt $asciiArt -BlurbText $blurbText
 
 while ($true) {
     $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
@@ -92,19 +94,22 @@ while ($true) {
             if ($selectedOption -gt 0) {
                 $selectedOption--
             }
-            Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
+            Show-Menu -Options $Options -Question $Question -AsciiArt $asciiArt -BlurbText $blurbText
         }
         $DOWN_ARROW {
             if ($selectedOption -lt ($Options.Count - 1)) {
                 $selectedOption++
             }
-            Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
+            Show-Menu -Options $Options -Question $Question -AsciiArt $asciiArt -BlurbText $blurbText
         }
         $ENTER {
-            return $Options[$selectedOption].Id
+            if ($selectedOption -lt 0 -or $selectedOption -ge $Options.Count - 1) {
+                return $null
+            }
+            return $Options[$selectedOption]
         }
         $ESCAPE {
-            return 0
+            return $null
         }
     }
 }

@@ -13,33 +13,47 @@ $options = @()
 
 $data | ForEach-Object {
     $option = [PSCustomObject]@{
-        Id = $_.id
+        Value = $_
+        Type = "CSV-ROW"
         Description = $_.description
     }
     $options = $options + $option
 }
 
+$OptionsInputGcn = [PSCustomObject]@{
+    Value = $null
+    Type = "INPUT-GCN"
+    Description = "Input GCN"
+}
+$options = $options + $OptionsInputGcn
+
 $OptionQuit = [PSCustomObject]@{
-    Id = "0"
-    Description = "quit"
+    Value = $null
+    Type = "QUIT"
+    Description = "Quit"
 }
 
 $options = $options + $OptionQuit
 
 $selection = &$menu `
-    -Title "Option Selection Menu" `
+    -Title "GCN Menu" `
+    -Question "Please choose a GCN option (or choose Input to manually provide one)" `
     -Options $options
 
-if ($selection -eq "0") {
-    Write-Host "Just quit the application"
-    pause
-} else {
-    Write-Host "Received: $selection"
-
-    $val = ($data | where-object id -eq "$selection" | select-object gcn, entityno)
-
-    Write-Host "Running Web API with GCN: $($val.gcn)"
-    Start-Sleep -Milliseconds 3000
-    Write-Host "... done executing..."
-    pause
+if ($null -ne $selection) {
+    if ($selection.Type -eq "CSV-ROW") {
+        Clear-Host
+        $val = ($data | where-object id -eq "$($selection.Value.id)" | select-object gcn, entityno)
+        Write-Host "Running Web API with GCN: $($val.gcn)"
+        Start-Sleep -Milliseconds 3000
+        Write-Host "... done executing..."
+        pause
+    } elseif ($selection.Type -eq "INPUT-GCN") {
+        Clear-Host
+        $val = Read-Host "Please enter a GCN"
+        Write-Host "Running Web API with GCN: $($val)"
+        Start-Sleep -Milliseconds 3000
+        Write-Host "... done executing..."
+        pause
+    }
 }
