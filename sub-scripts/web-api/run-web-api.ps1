@@ -35,7 +35,10 @@ if ($selection -eq "0") {
     pause
 } else {
     Write-Host "Received: $selection"
-    Write-Host "Running Web API with GCN: $selection"
+
+    $val = ($data | where-object id -eq "$selection" | select-object gcn, entityno)
+
+    Write-Host "Running Web API with GCN: $($val.gcn)"
     Start-Sleep -Milliseconds 3000
     Write-Host "... done executing..."
     pause
