@@ -26,7 +26,7 @@ $Menu = "$ScriptPath\common\operations-menu.ps1"
 #     }
 # }
 
-$OptionWebApiSelectGcn = [PSCustomObject]@{
+$OptionWebApi = [PSCustomObject]@{
     Description = "Web API"
     Script = {
         $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\web-api\menu.ps1"
@@ -34,6 +34,13 @@ $OptionWebApiSelectGcn = [PSCustomObject]@{
     }
 }
 
+$OptionRunDiagnostics = [PSCustomObject]@{
+    Description = "Run system diagnostics check (look for common problems)"
+    Script = {
+        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\diagnostics\diagnostics.ps1"
+        & $menu
+    }
+}
 
 $OptionQuit = [PSCustomObject]@{
     Description = "Quit"
@@ -46,10 +53,10 @@ $OptionQuit = [PSCustomObject]@{
 &$Menu `
     -Title "Main Menu" `
     -Options ([System.Collections.ArrayList]@( `
-        # $Option1, `
-        # $Option2, `
-        # $Option3, `
-        # $Option4, `
-        $OptionWebApiSelectGcn, `
+    # $Option2, `
+    # $Option3, `
+    # $Option4, `
+        $OptionWebApi, `
+        $OptionRunDiagnostics, `
         $OptionQuit `
     ))
