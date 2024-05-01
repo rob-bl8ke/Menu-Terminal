@@ -29,7 +29,6 @@ $OptionQuit = [PSCustomObject]@{
     }
 }
 
-# Pass in the menu sub title, menu options, and configuration to draw and interact with the menu
 &$Menu `
     -Title "Web API" `
     -Options ([System.Collections.ArrayList]@( `

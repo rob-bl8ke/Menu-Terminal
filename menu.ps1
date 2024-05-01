@@ -16,16 +16,6 @@ $Menu = "$ScriptPath\common\operations-menu.ps1"
 # $Option2 = New-StubInlineScriptMenuOption "Menu Option 2"
 # $Option3 = New-StubInlineScriptMenuOption "Menu Option 3"
 
-# $Option4 = [PSCustomObject]@{
-#     Description = "Option 4: nums"
-#     # Call a sub-menu by running an inline script.
-#     # Find the path from "menu-functions.ps1... not the root!
-#     Script = {
-#         $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\nums\menu-nums.ps1"
-#         & $menu -Config $config
-#     }
-# }
-
 $OptionWebApi = [PSCustomObject]@{
     Description = "Web API"
     Script = {
@@ -53,9 +43,6 @@ $OptionQuit = [PSCustomObject]@{
 &$Menu `
     -Title "Main Menu" `
     -Options ([System.Collections.ArrayList]@( `
-    # $Option2, `
-    # $Option3, `
-    # $Option4, `
         $OptionWebApi, `
         $OptionRunDiagnostics, `
         $OptionQuit `

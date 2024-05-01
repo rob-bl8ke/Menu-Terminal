@@ -45,7 +45,7 @@ function Get-AsciiArt {
 }
 
 function Get-JsonConfig {
-    $jsonContent = Get-Content -Path "$ScriptPath\..\config.json" -Raw
+    $jsonContent = Get-Content -Path "$ScriptPath\..\config\config.json" -Raw
     return $jsonContent | ConvertFrom-Json
 }
 
