@@ -81,35 +81,45 @@ function Show-Menu {
     }
 }
 
-$asciiArt = Get-AsciiArt -Title $applicationTitle -SubTitle $menuTitle
-$blurbText = Get-EventBlurb
 
-Show-Menu -Options $Options -Question $Question -AsciiArt $asciiArt -BlurbText $blurbText
-
-while ($true) {
-    $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
+Try {
+    $asciiArt = Get-AsciiArt -Title $applicationTitle -SubTitle $menuTitle
+    $blurbText = Get-EventBlurb
     
-    switch ($key) {
-        $UP_ARROW {
-            if ($selectedOption -gt 0) {
-                $selectedOption--
+    Show-Menu -Options $Options -Question $Question -AsciiArt $asciiArt -BlurbText $blurbText
+    
+    while ($true) {
+        $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
+        
+        switch ($key) {
+            $UP_ARROW {
+                if ($selectedOption -gt 0) {
+                    $selectedOption--
+                }
+                Show-Menu -Options $Options -Question $Question -AsciiArt $asciiArt -BlurbText $blurbText
             }
-            Show-Menu -Options $Options -Question $Question -AsciiArt $asciiArt -BlurbText $blurbText
-        }
-        $DOWN_ARROW {
-            if ($selectedOption -lt ($Options.Count - 1)) {
-                $selectedOption++
+            $DOWN_ARROW {
+                if ($selectedOption -lt ($Options.Count - 1)) {
+                    $selectedOption++
+                }
+                Show-Menu -Options $Options -Question $Question -AsciiArt $asciiArt -BlurbText $blurbText
             }
-            Show-Menu -Options $Options -Question $Question -AsciiArt $asciiArt -BlurbText $blurbText
-        }
-        $ENTER {
-            if ($selectedOption -lt 0 -or $selectedOption -ge $Options.Count - 1) {
+            $ENTER {
+                if ($selectedOption -lt 0 -or $selectedOption -ge $Options.Count - 1) {
+                    return $null
+                }
+                return $Options[$selectedOption]
+            }
+            $ESCAPE {
                 return $null
             }
-            return $Options[$selectedOption]
-        }
-        $ESCAPE {
-            return $null
         }
     }
+}
+Catch {
+    $ErrorMessage = $_.Exception.Message
+    $ErrorTimestamp = Get-Date
+    Add-Content -Path $config.application.errorLogFile -Value "$ErrorTimestamp - $ErrorMessage"
+
+    Throw $_
 }

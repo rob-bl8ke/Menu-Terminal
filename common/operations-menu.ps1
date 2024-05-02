@@ -93,44 +93,54 @@ function Show-Menu {
     }
 }
 
-$asciiArt = Get-AsciiArt -Title $applicationTitle -SubTitle $menuTitle
-$blurbText = Get-EventBlurb
+Try {
+    $asciiArt = Get-AsciiArt -Title $applicationTitle -SubTitle $menuTitle
+    $blurbText = Get-EventBlurb
 
-Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
+    Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
 
-while ($true) {
-    $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
-    
-    switch ($key) {
-        $UP_ARROW {
-            if ($selectedOption -gt 0) {
-                $selectedOption--
-            }
-            Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
-        }
-        $DOWN_ARROW {
-            if ($selectedOption -lt ($Options.Count - 1)) {
-                $selectedOption++
-            }
-            Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
-        }
-        $ENTER {
-            Clear-Host
-            $selectedScript = $Options[$selectedOption].Script
-            
-            if ($selectedScript -is [ScriptBlock]) {
-                & $selectedScript
+    while ($true) {
+        $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
+        
+        switch ($key) {
+            $UP_ARROW {
+                if ($selectedOption -gt 0) {
+                    $selectedOption--
+                }
                 Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
-            } elseif ($selectedScript -is [string]) {
-                & $selectedScript
-                Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
-            } else {
-                Write-Host "Unknown script type."
             }
-            break
-        }
-        $ESCAPE {
-            exit 0
+            $DOWN_ARROW {
+                if ($selectedOption -lt ($Options.Count - 1)) {
+                    $selectedOption++
+                }
+                Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
+            }
+            $ENTER {
+                Clear-Host
+                $selectedScript = $Options[$selectedOption].Script
+                
+                if ($selectedScript -is [ScriptBlock]) {
+                    & $selectedScript
+                    Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
+                } elseif ($selectedScript -is [string]) {
+                    & $selectedScript
+                    Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
+                } else {
+                    Write-Host "Unknown script type."
+                }
+                break
+            }
+            $ESCAPE {
+                exit 0
+            }
         }
     }
+}
+Catch {
+    $ErrorMessage = $_.Exception.Message
+    $ErrorTimestamp = Get-Date
+    Add-Content -Path $config.application.errorLogFile -Value "$ErrorTimestamp - $ErrorMessage"
+
+    # Rethrow the exception
+    Throw $_
 }

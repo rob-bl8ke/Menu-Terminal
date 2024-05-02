@@ -1,6 +1,7 @@
 {
     "application": {
-        "title": "Developer Tools 2024"
+        "title": "Developer Tools 2024",
+        "errorLogFile": "C:\\Code\\rob-bl8ke\\Menu-Terminal\\errors.log"
     },
     "projectsLibrary": {
         "ideList": [
