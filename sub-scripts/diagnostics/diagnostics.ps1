@@ -31,7 +31,12 @@ Start-Sleep -Milliseconds 2000
 Write-Host "... scanning completed. The following issues have been found:"
 Write-Host ""
 
-$issues | Format-Table
-Write-Host ""
+if ($issues.Length -gt 0) {
+    $issues | Format-Table
+    Write-Host ""
+} else {
+    Write-Host "No issues found."
+    Write-Host ""
+}
 
 pause
