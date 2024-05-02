@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApplicationManifest Test="Test">
+  <Parameters>
+    <Parameter DefaultName="Platform-Key" />
+  </Parameters>
+</ApplicationManifest>
