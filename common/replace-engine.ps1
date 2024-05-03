@@ -14,8 +14,10 @@ function Set-SymbolToValue {
         $TransformedValue = $Value
     }
 
+    $placeholder = "@{" + $Symbol + "}"
+
     # Use the Replace method to replace all instances of the symbol with the transformed value
-    $Result = $Blueprint.Replace($Symbol, $TransformedValue)
+    $Result = $Blueprint.Replace($placeholder, $TransformedValue)
 
     return $Result
 }

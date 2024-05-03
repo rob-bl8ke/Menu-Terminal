@@ -1,5 +1,5 @@
-$ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-."$ScriptPath\..\..\..\common\replace-engine.ps1"
+# $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
+."$PSScriptRoot\replace-engine.ps1"
 
 function Set-FeatureBranchForUat {
 
@@ -8,12 +8,11 @@ function Set-FeatureBranchForUat {
         [string] $Value,
         [string] $BluePrint
     )
-        
-    
+
     # Define a transformation script block
     $RemoveWhitespace = {
         param($Value)
-        return $Value -replace '\s+',''
+        return "rc/$Value"
     }
     
     return Set-SymbolToValue -Symbol $Symbol -Value $Value -Blueprint $Blueprint -Transformation $RemoveWhitespace
@@ -30,7 +29,7 @@ function Set-FeatureBranchForUat2 {
     # Define a transformation script block
     $RemoveWhitespace = {
         param($Value)
-        return $Value -replace '\s+',''
+        return "rc-next/$Value"
     }
     
     return Set-SymbolToValue -Symbol $Symbol -Value $Value -Blueprint $Blueprint -Transformation $RemoveWhitespace
@@ -47,9 +46,8 @@ function Set-FeatureBranchForPs {
     # Define a transformation script block
     $RemoveWhitespace = {
         param($Value)
-        return $Value -replace '\s+',''
+        return "hotfix/$Value"
     }
     
     return Set-SymbolToValue -Symbol $Symbol -Value $Value -Blueprint $Blueprint -Transformation $RemoveWhitespace
 }
-

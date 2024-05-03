@@ -1,1 +1,1 @@
-"The score changes to %%UAT%% which changes to %%UAT2%% which changes to %%PS%%. Final score %%PS%%."
+The score changes to @{releaseDates.uat1} which changes to @{releaseDates.uat2} which changes to @{releaseDates.psc}. Final score @{releaseDates.psc}.

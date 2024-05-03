@@ -1,5 +1,6 @@
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-."$ScriptPath\transformers.ps1"
+."$ScriptPath\..\..\..\common\replacers.ps1"
+."$ScriptPath\..\..\..\common\get-json-symbol-values.ps1"
 
 $jsonPath = "$ScriptPath\..\..\..\config\global-vars.json"
 Test-Path $jsonPath
@@ -10,19 +11,23 @@ $json = Get-Content $jsonPath | ConvertFrom-Json
 $Blueprint = Get-Content -Path "$ScriptPath\blueprints\1-basic-ta-document.txt" -Raw
 
 Clear-Host
-$Blueprint
 
 Write-Host "Generating..."
 Write-Host ""
-Write-Host "value: " + $json.releaseDates.uat1
-Write-Host "---"
-$uat1 = $json.releaseDates.uat1
 
-$Blueprint = Set-FeatureBranchForUat -Symbol "%%UAT%%" -Value $uat1 -Blueprint $Blueprint
+$uat1Setting = "releaseDates.uat1"
+$uat2Setting = "releaseDates.uat2"
+$pscSetting = "releaseDates.psc"
+
+$uat1 = Get-JsonValue -JsonData $json -Path $uat1Setting
+$uat2 = Get-JsonValue -JsonData $json -Path $uat2Setting
+$psc = Get-JsonValue -JsonData $json -Path $pscSetting
+
+$Blueprint = Set-FeatureBranchForUat -Symbol $uat1Setting -Value $uat1 -Blueprint $Blueprint
 $Blueprint
-$Blueprint = Set-FeatureBranchForUat2 -Symbol "%%UAT2%%" -Value $json.releaseDates.uat2 -Blueprint $Blueprint
+$Blueprint = Set-FeatureBranchForUat2 -Symbol $uat2Setting -Value $uat2 -Blueprint $Blueprint
 $Blueprint
-$Blueprint = Set-FeatureBranchForPs -Symbol "%%PS%%" -Value $json.releaseDates.psc -Blueprint $Blueprint
+$Blueprint = Set-FeatureBranchForPs -Symbol $pscSetting -Value $psc -Blueprint $Blueprint
 $Blueprint
 
 Write-Host "Done!"
