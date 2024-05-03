@@ -118,12 +118,16 @@ Try {
             $ENTER {
                 Clear-Host
                 $selectedScript = $Options[$selectedOption].Script
-                
+                $exitMenu = if ($Options[$selectedOption].ExitMenuAfterExecution -eq $true) { $true } else { $false }
+                # Write-Host $escape
+
                 if ($selectedScript -is [ScriptBlock]) {
                     & $selectedScript
+                    if ($exitMenu -eq $true) { exit 0 }
                     Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
                 } elseif ($selectedScript -is [string]) {
                     & $selectedScript
+                    if ($exitMenu -eq $true) { exit 0 }
                     Show-Menu -Options $Options -AsciiArt $asciiArt -BlurbText $blurbText
                 } else {
                     Write-Host "Unknown script type."
@@ -131,6 +135,7 @@ Try {
                 break
             }
             $ESCAPE {
+                Clear-Host
                 exit 0
             }
         }

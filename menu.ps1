@@ -4,6 +4,10 @@ The Main Menu
 
 Top level menu
 
+
+- Look into wt for ways to use other terminal windows
+    - https://learn.microsoft.com/en-us/windows/terminal/command-line-arguments?tabs=windows
+    - wt ping learn.microsoft.com
 ################################################################################################### #>
 
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
@@ -12,9 +16,31 @@ $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 
 $Menu = "$ScriptPath\common\operations-menu.ps1"
 
-# $Option1 = New-StubInlineScriptMenuOption "Menu Option 1"
-# $Option2 = New-StubInlineScriptMenuOption "Menu Option 2"
-# $Option3 = New-StubInlineScriptMenuOption "Menu Option 3"
+# $OptionNavigateTo = New-StubInlineScriptMenuOption "Navigate to..."
+
+$OptionNavigateTo = [PSCustomObject]@{
+    Description = "Navigate to..."
+    Script = {
+        Set-Location "C:\Users\robert.blake\Desktop\"
+    }
+    ExitMenuAfterExecution = $true
+}
+
+$OptionGenerate = [PSCustomObject]@{
+    Description = "Generate..."
+    Script = {
+        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\sub-menus\generate\menu.ps1"
+        & $menu
+    }
+}
+
+$OptionProjects = [PSCustomObject]@{
+    Description = "Projects..."
+    Script = {
+        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\sub-menus\projects\menu.ps1"
+        & $menu
+    }
+}
 
 $OptionWebApi = [PSCustomObject]@{
     Description = "Web API"
@@ -25,7 +51,7 @@ $OptionWebApi = [PSCustomObject]@{
 }
 
 $OptionRunDiagnostics = [PSCustomObject]@{
-    Description = "Run system diagnostics check (look for common problems)"
+    Description = "Run checks"
     Script = {
         $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\diagnostics\diagnostics.ps1"
         & $menu
@@ -35,6 +61,7 @@ $OptionRunDiagnostics = [PSCustomObject]@{
 $OptionQuit = [PSCustomObject]@{
     Description = "Quit"
     Script =  {
+        Clear-Host
         exit 0
     }
 }
@@ -43,6 +70,9 @@ $OptionQuit = [PSCustomObject]@{
 &$Menu `
     -Title "Main Menu" `
     -Options ([System.Collections.ArrayList]@( `
+        $OptionNavigateTo, `
+        $OptionGenerate, `
+        $OptionProjects, `
         $OptionWebApi, `
         $OptionRunDiagnostics, `
         $OptionQuit `
