@@ -19,6 +19,14 @@ $OptionTechnicalAnalysis = [PSCustomObject]@{
     }
 }
 
+$OptionTaSequenceDiagram = [PSCustomObject]@{
+    Description = "Generate TA Sequence Diagram"
+    Script = {
+        $generator = Join-Path -Path $ScriptPath -ChildPath "..\sub-scripts\generate\ta-seq-diagram\gen-seq-diagram.ps1"
+        & $generator
+    }
+}
+
 $OptionReleaseNotes = [PSCustomObject]@{
     Description = "Release Notes (Issue tables and log lists)"
     Script = {
@@ -54,6 +62,7 @@ $OptionQuit = [PSCustomObject]@{
     -Title "Generate (Content) Operations Menu" `
     -Options ([System.Collections.ArrayList]@( `
         $OptionTechnicalAnalysis, `
+        $OptionTaSequenceDiagram, `
         $OptionReleaseNotes, `
         $OptionGlobalSettings, `
         $OptionReleaseBranchInfo, `
