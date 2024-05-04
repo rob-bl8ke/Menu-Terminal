@@ -1,13 +1,7 @@
-# Write-Host "Hello"
-# # Write-Host "$ScriptPath"
-# # Write-Host ""$ScriptPath\..\..\common\stub-menu-option.ps1""
-# # Write-Host $Menu
-# pause
+$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Definition
 
-$ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-
-$menu = "$ScriptPath\..\..\common\row-selection-menu.ps1"
-$csv = "$ScriptPath\gcns.csv"
+$menu = "$PSScriptRoot\..\..\..\common\row-selection-menu.ps1"
+$csv = "$PSScriptRoot\gcns.csv"
 $data = Import-Csv $csv
 $options = @()
 

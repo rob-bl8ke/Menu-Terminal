@@ -29,7 +29,7 @@ $OptionNavigateTo = [PSCustomObject]@{
 $OptionGenerate = [PSCustomObject]@{
     Description = "Generate..."
     Script = {
-        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\sub-menus\generate\menu.ps1"
+        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\generate\menu.ps1"
         & $menu
     }
 }
@@ -37,15 +37,7 @@ $OptionGenerate = [PSCustomObject]@{
 $OptionProjects = [PSCustomObject]@{
     Description = "Projects..."
     Script = {
-        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\sub-menus\projects\menu.ps1"
-        & $menu
-    }
-}
-
-$OptionWebApi = [PSCustomObject]@{
-    Description = "Web API"
-    Script = {
-        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\web-api\menu.ps1"
+        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\projects\menu.ps1"
         & $menu
     }
 }
@@ -73,7 +65,6 @@ $OptionQuit = [PSCustomObject]@{
         $OptionNavigateTo, `
         $OptionGenerate, `
         $OptionProjects, `
-        $OptionWebApi, `
         $OptionRunDiagnostics, `
         $OptionQuit `
     ))

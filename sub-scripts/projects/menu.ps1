@@ -6,10 +6,8 @@ All project operations
 
 ################################################################################################### #>
 
-$ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-
-."$ScriptPath\..\..\..\common\stub-menu-option.ps1"
-$Menu = "$ScriptPath\..\..\..\common\operations-menu.ps1"
+."$PSScriptRoot\..\..\common\stub-menu-option.ps1"
+$Menu = "$PSScriptRoot\..\..\common\operations-menu.ps1"
 
 $OptionApexSPA = [PSCustomObject]@{
     Description = "Angular App (SPA)"
@@ -19,18 +17,18 @@ $OptionApexSPA = [PSCustomObject]@{
     }
 }
 
-$OptionPlatformWeb = [PSCustomObject]@{
+$OptionWebApi = [PSCustomObject]@{
     Description = "Web API (PlatformWeb)"
     Script = {
-        Write-Host "Web API (PlatformWeb)"
-        pause
+        $menu = Join-Path -Path $PSScriptRoot -ChildPath "\web-api\menu.ps1"
+        & $menu
     }
 }
 
 $OptionPlatformAPI = [PSCustomObject]@{
     Description = "Service Fabric Cluster Services (PlatformAPI)"
     Script = {
-        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\sub-menus\projects\platform-api\menu.ps1"
+        $menu = Join-Path -Path $PSScriptRoot -ChildPath "\platform-api\menu.ps1"
         & $menu
     }
 }
@@ -53,7 +51,7 @@ $OptionQuit = [PSCustomObject]@{
     -Title "SPA Operations Menu" `
     -Options ([System.Collections.ArrayList]@( `
         $OptionApexSPA, `
-        $OptionPlatformWeb, `
+        $OptionWebApi, `
         $OptionPlatformAPI, `
         $OptionFunctionsApp, `
         $OptionQuit `

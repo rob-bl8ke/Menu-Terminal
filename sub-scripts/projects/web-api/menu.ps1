@@ -6,10 +6,10 @@ All operations required by the Web API
 
 ################################################################################################### #>
 
-$ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
+$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Definition
 
-."$ScriptPath\..\..\common\stub-menu-option.ps1"
-$Menu = "$ScriptPath\..\..\common\operations-menu.ps1"
+."$PSScriptRoot\..\..\..\common\stub-menu-option.ps1"
+$Menu = "$PSScriptRoot\..\..\..\common\operations-menu.ps1"
 
 $OptionClearGcnHistory = New-StubInlineScriptMenuOption "Clear GCN History"
 $OptionViewCurrentGcn = New-StubInlineScriptMenuOption "View Current GCN"
@@ -17,7 +17,7 @@ $OptionViewCurrentGcn = New-StubInlineScriptMenuOption "View Current GCN"
 $OptionRunWebApi = [PSCustomObject]@{
     Description = "Run Web API"
     Script = {
-        $menu = Join-Path -Path $ScriptPath -ChildPath ".\..\sub-scripts\web-api\run-web-api.ps1"
+        $menu = Join-Path -Path $PSScriptRoot -ChildPath "\run-web-api.ps1"
         & $menu
     }
 }

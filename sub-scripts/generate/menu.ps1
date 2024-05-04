@@ -6,15 +6,13 @@ All generate operations
 
 ################################################################################################### #>
 
-$ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-
-."$ScriptPath\..\..\..\common\stub-menu-option.ps1"
-$Menu = "$ScriptPath\..\..\..\common\operations-menu.ps1"
+."$PSScriptRoot\..\..\common\stub-menu-option.ps1"
+$Menu = "$PSScriptRoot\..\..\common\operations-menu.ps1"
 
 $OptionTechnicalAnalysis = [PSCustomObject]@{
     Description = "Technical Analysis (TA) for Sprint Finalization"
     Script = {
-        $generator = Join-Path -Path $ScriptPath -ChildPath "..\sub-scripts\generate\ta-docs\generator.ps1"
+        $generator = Join-Path -Path $PSScriptRoot -ChildPath "\ta-docs\generator.ps1"
         & $generator
     }
 }
@@ -22,7 +20,7 @@ $OptionTechnicalAnalysis = [PSCustomObject]@{
 $OptionTaSequenceDiagram = [PSCustomObject]@{
     Description = "Generate TA Sequence Diagram"
     Script = {
-        $generator = Join-Path -Path $ScriptPath -ChildPath "..\sub-scripts\generate\ta-seq-diagram\gen-seq-diagram.ps1"
+        $generator = Join-Path -Path $PSScriptRoot -ChildPath "\ta-seq-diagram\gen-seq-diagram.ps1"
         & $generator
     }
 }
