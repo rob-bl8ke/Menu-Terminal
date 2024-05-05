@@ -17,6 +17,14 @@ $OptionTechnicalAnalysis = [PSCustomObject]@{
     }
 }
 
+$OptionTechnicalAnalysis = [PSCustomObject]@{
+    Description = "Generate Issue Documents from TA Data"
+    Script = {
+        $generator = Join-Path -Path $PSScriptRoot -ChildPath "\ta-docs\generate-issue-doc.ps1"
+        & $generator
+    }
+}
+
 $OptionTaSequenceDiagram = [PSCustomObject]@{
     Description = "Generate TA Sequence Diagram"
     Script = {
@@ -62,6 +70,7 @@ $OptionQuit = [PSCustomObject]@{
         $OptionTechnicalAnalysis, `
         $OptionTaSequenceDiagram, `
         $OptionReleaseNotes, `
+        $OptionTechnicalAnalysis, `
         $OptionGlobalSettings, `
         $OptionReleaseBranchInfo, `
         $OptionQuit `

@@ -1,5 +1,6 @@
 
 ."$PSScriptRoot\..\..\..\common\replacers.ps1"
+."$PSScriptRoot\..\..\..\common\prompts.ps1"
 
 # Load the filtered data
 $filteredData = Import-Csv -Path "$PSScriptRoot\process.csv" | Where-Object { $_.Web -ne "" -or $_.Api -ne "" -or $_.DB -ne "" }
@@ -63,5 +64,10 @@ foreach ($item in $resultSet) {
     $output = Set-Value -Symbol "PlatformApiBranchUrlText" -Value $item.PlatformApiBranchUrlText -Blueprint $output
     $output = Set-Value -Symbol "PlatformDatabaseBranchUrlText" -Value $item.PlatformDatabaseBranchUrlText -Blueprint $output
     
-    Set-Content "$PSScriptRoot\$($item.FileTitle)" -Value $output
+    Write-File -FileName "$PSScriptRoot\$($item.FileTitle)" `
+        -FileContent $output `
+        -FilesFilter "Markdown Document (*.md)|*.md" `
+        -DialogTitle "Save as Issue Document"
 }
+
+pause
