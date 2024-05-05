@@ -1,5 +1,15 @@
-# $ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
 ."$PSScriptRoot\replace-engine.ps1"
+
+# Simply replace the value. Do not transform.
+function Set-Value {
+    param (
+        [string] $Symbol,
+        [string] $Value,
+        [string] $BluePrint
+    )
+    
+    return Set-SymbolToValue -Symbol $Symbol -Value $Value -Blueprint $Blueprint -Transformation $null
+}
 
 function Set-FeatureBranchForUat {
 

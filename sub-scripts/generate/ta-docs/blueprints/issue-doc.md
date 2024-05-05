@@ -4,13 +4,16 @@ Throw this away when you're done with it.
 - Change history is best left to the issue on DevOps. Always record discussions and changes there.
 - Always remember to do your branch maintenance. You'll see some of that maintenance tasks provided here after your references section.
 
-# [894587 - Stuck thingy testing and possible fixes]()
+# @{DocumentTitle}
 
-- [Pull Request Reference]
+@{PlatformWebBranchUrlText}
+@{PlatformApiBranchUrlText}
+@{PlatformDatabaseBranchUrlText}
 
 ```bash
-feature/894587-stuck-thingy-testing-and-possible-fixes
+@{Branch}
 ```
+- [Pull Request Reference]
 
 ## GCNs
 
@@ -73,7 +76,7 @@ ACT ->> DOC: POST http:\\localhost<br>Get...
 ```bash
 git checkout main
 git pull
-git switch feature/894587-stuck-thingy-testing-and-possible-fixes
+git switch @{Branch}
 git merge main
 ```
 Once done, you might need to merge this branch into any satellite branches you have above this one.
