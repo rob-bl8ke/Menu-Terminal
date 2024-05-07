@@ -1,5 +1,9 @@
-"Key","Name","Class","Participant","Call",
-"tra","Transactions","___Controller","participant","POST http:\\localhost<br>GetTransaction()",
-"ins","Instructions","___Controller","participant","POST http:\\localhost<br>GetInstruction()",
-"doc","Documents","___Controller","participant","POST http:\\localhost<br>GetDocument()",
-"act","Caller","___","actor","POST http:\\localhost<br>Get...",
+"Key","Name","Class","Participant","Call"
+"tra","Transactions","___Controller","participant","calls"
+"ins","Instructions","___Controller","participant","calls"
+"doc","Documents","___Controller","participant","calls"
+,"Instruments","___Controller","participant","calls"
+"cos","CosmosDB","Repository","database","calls"
+"lob","CommonLob","Repository","database","calls"
+"fnz","FNZ","3rd Party","actor","calls"
+"act","Caller","Client","actor","calls"

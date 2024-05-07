@@ -37,27 +37,45 @@ function Generate-MermaidSequenceDiagram {
 
     # Loop through service keys to generate participant declarations
     foreach ($key in $serviceKeys) {
-        $serviceData = $apiServices[$key]
-        $participants += "$($serviceData['Participant']) $key as <<$($serviceData['Name'])>><br>$($serviceData['Class'])"
+        if ($apiServices.ContainsKey($key)) {
+            $serviceData = $apiServices[$key]
+            $participants += "$($serviceData['Participant']) $key as <<$($serviceData['Name'])>><br>$($serviceData['Class'])"
+        } else {
+            # If key doesn't exist in CSV data, use key as name and class, "participant" as participant, "calls" as call
+            $participants += "participant $key as <<$key>><br>$key"
+        }
     }
+    $participants = $participants | Select-Object -Unique
 
     # Define the Mermaid sequence diagram script header with participant declarations
     $script = @"
 sequenceDiagram
-$($participants -join "`n") `n
+autonumber
+
+$($participants -join "`n") `n`n
 "@
 
     # Loop through service keys to generate calls between services
     for ($i = 0; $i -lt $serviceKeys.Length - 1; $i++) {
         $sourceKey = $serviceKeys[$i]
         $targetKey = $serviceKeys[$i + 1]
-        $sourceData = $apiServices[$sourceKey]
-        $targetData = $apiServices[$targetKey]
 
-        # Add call between services to the script
-        $script += @"
-${sourceKey} ->> ${targetKey}: $($sourceData['Call']) `n
+        if ($apiServices.ContainsKey($sourceKey) -and $apiServices.ContainsKey($targetKey)) {
+            $sourceData = $apiServices[$sourceKey]
+            $targetData = $apiServices[$targetKey]
+
+            # Add call between services to the script
+            $script += @"
+${sourceKey} ->> ${targetKey}: $($sourceData['Call'])
+Note over ${sourceKey},${targetKey}: A typical interaction `n`n
 "@
+        } else {
+            # If either source or target key doesn't exist, use the keys directly
+            $script += @"
+${sourceKey} ->> ${targetKey}: calls
+Note over ${sourceKey},${targetKey}: A typical interaction `n`n
+"@
+        }
     }
 
     # Output the generated Mermaid sequence diagram script
