@@ -6,10 +6,8 @@ All project operations
 
 ################################################################################################### #>
 
-$ScriptPath = Split-Path $MyInvocation.MyCommand.Definition
-
-."$ScriptPath\..\..\..\..\common\stub-menu-option.ps1"
-$Menu = "$ScriptPath\..\..\..\..\common\operations-menu.ps1"
+."$PSScriptRoot\..\..\..\common\stub-menu-option.ps1"
+$Menu = "$PSScriptRoot\..\..\..\common\operations-menu.ps1"
 
 $OptionCleanBins = [PSCustomObject]@{
     Description = "Clean DLLs (bin and obj folders)"
